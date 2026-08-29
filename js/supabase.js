@@ -2,8 +2,8 @@
  * HostelHub - Supabase Client Configuration & Database Connectivity
  */
 
-const SUPABASE_URL = "https://abcdefghijk.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_xxxxxxxxxxxxx";
+const SUPABASE_URL = "https://difdcjxvfpbazcmpnxec.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_wBb4swb4vJXBJnTL5xogbg_r8Tl-Mjw";
 
 let supabaseClient = null;
 
