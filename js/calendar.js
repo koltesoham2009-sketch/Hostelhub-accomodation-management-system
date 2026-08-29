@@ -19,13 +19,23 @@ class CalendarModule {
     const container = document.getElementById('view-calendar');
     if (!container) return;
 
-    const allRooms = window.store.getRooms();
-    const allBookings = window.store.getBookings ? window.store.getBookings() : [];
+    let allRooms = [];
+    let allBookings = [];
+    try {
+      allRooms = (window.store && window.store.getRooms) ? window.store.getRooms() : [];
+      allBookings = (window.store && window.store.getBookings) ? window.store.getBookings() : [];
+    } catch(e) {
+      allRooms = [];
+      allBookings = [];
+    }
 
     // Filter rooms if type or floor filter active
     const rooms = allRooms.filter(r => {
-      const matchType = this.roomTypeFilter === 'ALL' || r.type.includes(this.roomTypeFilter);
-      const matchFloor = this.selectedFloor === 'ALL' || r.floor.toString() === this.selectedFloor;
+      if (!r) return false;
+      const type = String(r.type || '');
+      const floor = String(r.floor || '1');
+      const matchType = this.roomTypeFilter === 'ALL' || type.includes(this.roomTypeFilter);
+      const matchFloor = this.selectedFloor === 'ALL' || floor === this.selectedFloor;
       return matchType && matchFloor;
     });
 
@@ -43,8 +53,8 @@ class CalendarModule {
       dates.push({ date: d, dateStr, dayName, dayNumber, monthName, isToday });
     }
 
-    const startMonth = dates[0].monthName;
-    const endMonth = dates[dates.length - 1].monthName;
+    const startMonth = dates[0] ? dates[0].monthName : 'Aug';
+    const endMonth = dates[dates.length - 1] ? dates[dates.length - 1].monthName : 'Sep';
     const dateRangeLabel = startMonth === endMonth ? 
       `${startMonth} ${dates[0].dayNumber} - ${dates[dates.length - 1].dayNumber}, 2026` :
       `${startMonth} ${dates[0].dayNumber} - ${endMonth} ${dates[dates.length - 1].dayNumber}, 2026`;
@@ -132,7 +142,7 @@ class CalendarModule {
             <!-- Matrix Body -->
             <div class="divide-y divide-slate-100 dark:divide-slate-800">
               ${rooms.map(room => {
-                const roomBookings = allBookings.filter(b => b.roomId === room.id || b.roomNumber === room.number);
+                const roomBookings = allBookings.filter(b => b && (b.roomId === room.id || b.roomNumber === room.number));
 
                 return `
                   <div class="gantt-row group" data-room-id="${room.id}">
@@ -142,10 +152,10 @@ class CalendarModule {
                       <div>
                         <div class="flex items-center gap-1.5">
                           <span class="font-bold text-xs text-slate-900 dark:text-white">${room.number}</span>
-                          <span class="text-[10px] text-slate-400 font-medium">${room.block ? room.block.split(' ')[0] : 'F' + room.floor}</span>
+                          <span class="text-[10px] text-slate-400 font-medium">${room.block ? room.block.split(' ')[0] : 'F' + (room.floor || 1)}</span>
                         </div>
-                        <div class="text-[10px] text-slate-500 dark:text-slate-400 truncate max-w-[110px] font-medium" title="${room.type}">
-                          ${room.type}
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400 truncate max-w-[110px] font-medium" title="${room.type || ''}">
+                          ${room.type || 'Room'}
                         </div>
                       </div>
                       <span class="w-2 h-2 rounded-full ${
@@ -184,6 +194,7 @@ class CalendarModule {
   }
 
   renderBookingBlock(booking, dates) {
+    if (!booking || !dates || dates.length === 0) return '';
     const startDateStr = dates[0].dateStr;
     const endDateStr = dates[dates.length - 1].dateStr;
 
@@ -216,10 +227,10 @@ class CalendarModule {
         class="gantt-booking-block ${statusClass}"
         style="left: ${leftPos}px; width: ${blockWidth}px;"
         onclick="event.stopPropagation(); window.app.openBookingDetailsModal('${booking.id}')"
-        title="${booking.guestName} (${checkIn} to ${checkOut})">
+        title="${booking.guestName || 'Resident'} (${checkIn} to ${checkOut})">
         
         <span class="truncate text-[11px] font-bold">
-          👤 ${booking.guestName}
+          👤 ${booking.guestName || 'Resident'}
         </span>
         <span class="text-[9px] opacity-90 font-normal shrink-0">
           (${nightSpan}d)

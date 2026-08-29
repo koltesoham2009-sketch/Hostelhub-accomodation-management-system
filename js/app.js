@@ -837,6 +837,13 @@ class HostelHubApp {
       }
     });
 
+    window.addEventListener('hashchange', () => {
+      const h = window.location.hash.replace('#', '') || 'dashboard';
+      if (h !== this.currentView) {
+        this.navigate(h);
+      }
+    });
+
     document.addEventListener('click', (e) => {
       const notifContainer = document.getElementById('notification-center-container');
       if (notifContainer && !notifContainer.contains(e.target)) {

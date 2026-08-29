@@ -1,9 +1,9 @@
 /**
- * HostelHub - Complete Data Store & Auto-Seeding Dataset (v2.5)
+ * HostelHub - Complete Data Store & Auto-Seeding Dataset (v3.0)
  * Manages Hostel Blocks, Rooms, Students, Bookings, Allocations, Payments, Complaints, and LocalStorage Sync.
  */
 
-const DATA_VERSION = '2.5';
+const DATA_VERSION = '3.0';
 
 const HOSTEL_BLOCKS = [
   { id: 'BLOCK-A', name: 'Block A (Boys Hostel)', type: 'Boys', totalFloors: 3, totalRooms: 18, warden: 'Dr. R. K. Sharma', contact: '+91 98765 43210' },
@@ -12,7 +12,7 @@ const HOSTEL_BLOCKS = [
 ];
 
 const INITIAL_ROOMS = [
-  // Block A (Boys Hostel - Floor 1 & 2)
+  // Block A (Boys Hostel)
   { id: 'A-101-A', number: 'A-101-A', block: 'BLOCK-A', floor: 1, type: '4-Bed Dorm', bedType: 'Single Bunk', capacity: 1, rate: 1200, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-001', currentGuest: 'Rohan Sharma' },
   { id: 'A-101-B', number: 'A-101-B', block: 'BLOCK-A', floor: 1, type: '4-Bed Dorm', bedType: 'Single Bunk', capacity: 1, rate: 1200, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-002', currentGuest: 'Aditya Verma' },
   { id: 'A-101-C', number: 'A-101-C', block: 'BLOCK-A', floor: 1, type: '4-Bed Dorm', bedType: 'Single Bunk', capacity: 1, rate: 1200, status: 'Available', condition: 'Clean', currentStudentId: null, currentGuest: null },
@@ -26,7 +26,7 @@ const INITIAL_ROOMS = [
   { id: 'A-203', number: 'A-203', block: 'BLOCK-A', floor: 2, type: '2-Bed Sharing', bedType: 'Twin Single', capacity: 2, rate: 1500, status: 'Maintenance', condition: 'Needs Cleaning', currentStudentId: null, currentGuest: null },
   { id: 'A-204', number: 'A-204', block: 'BLOCK-A', floor: 2, type: '2-Bed Sharing', bedType: 'Twin Single', capacity: 2, rate: 1500, status: 'Available', condition: 'Clean', currentStudentId: null, currentGuest: null },
 
-  // Block B (Girls Hostel - Floor 1 & 2)
+  // Block B (Girls Hostel)
   { id: 'B-101-A', number: 'B-101-A', block: 'BLOCK-B', floor: 1, type: '3-Bed Sharing', bedType: 'Single Bed', capacity: 1, rate: 1600, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-006', currentGuest: 'Ananya Deshmukh' },
   { id: 'B-101-B', number: 'B-101-B', block: 'BLOCK-B', floor: 1, type: '3-Bed Sharing', bedType: 'Single Bed', capacity: 1, rate: 1600, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-007', currentGuest: 'Sophia Chen' },
   { id: 'B-101-C', number: 'B-101-C', block: 'BLOCK-B', floor: 1, type: '3-Bed Sharing', bedType: 'Single Bed', capacity: 1, rate: 1600, status: 'Available', condition: 'Clean', currentStudentId: null, currentGuest: null },
@@ -636,7 +636,16 @@ class HostelDataStore {
   // --- Rooms ---
   getRooms() {
     const raw = localStorage.getItem(this.storageKeyPrefix + 'rooms');
-    return raw ? JSON.parse(raw) : INITIAL_ROOMS;
+    let list = [];
+    try {
+      list = raw ? JSON.parse(raw) : [];
+    } catch(e) { list = []; }
+
+    if (!Array.isArray(list) || list.length === 0) {
+      this.saveRooms(INITIAL_ROOMS);
+      return INITIAL_ROOMS;
+    }
+    return list;
   }
 
   saveRooms(rooms) {
@@ -674,11 +683,42 @@ class HostelDataStore {
   // --- Students / CRM Directory ---
   getStudents() {
     const raw = localStorage.getItem(this.storageKeyPrefix + 'students');
-    if (!raw || raw === '[]') {
-      localStorage.setItem(this.storageKeyPrefix + 'students', JSON.stringify(INITIAL_STUDENTS));
+    let list = [];
+    try {
+      list = raw ? JSON.parse(raw) : [];
+    } catch(e) { list = []; }
+
+    if (!Array.isArray(list) || list.length === 0 || !list[0].rollNo) {
+      this.saveStudents(INITIAL_STUDENTS);
       return INITIAL_STUDENTS;
     }
-    return JSON.parse(raw);
+
+    return list.map((s, idx) => ({
+      id: s.id || `STU-2024-${String(idx + 1).padStart(3, '0')}`,
+      name: s.name || 'Resident Student',
+      rollNo: s.rollNo || s.id || `2024-STU-${idx + 1}`,
+      email: s.email || 'student@college.edu',
+      phone: s.phone || '+91 98000 00000',
+      department: s.department || 'Computer Science & Engineering',
+      year: s.year || '3rd Year',
+      gender: s.gender || 'Other',
+      loyaltyTier: s.loyaltyTier || 'Silver',
+      loyaltyPoints: s.loyaltyPoints || 500,
+      currentStatus: s.currentStatus || 'In-House',
+      avatar: s.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+      hostelBlock: s.hostelBlock || 'Block A (Boys Hostel)',
+      roomAssigned: s.roomAssigned || '',
+      bedNumber: s.bedNumber || 'Bed A',
+      guardianName: s.guardianName || 'Guardian',
+      guardianPhone: s.guardianPhone || s.phone || '+91 98000 00000',
+      emergencyContact: s.emergencyContact || s.phone || '+91 98000 00000',
+      address: s.address || 'Campus Residency, India',
+      feeStatus: s.feeStatus || 'Paid',
+      totalFees: s.totalFees || 12000,
+      paidFees: s.paidFees || 12000,
+      pendingFees: s.pendingFees || 0,
+      notes: s.notes || ''
+    }));
   }
 
   saveStudents(students) {
@@ -715,11 +755,33 @@ class HostelDataStore {
   // --- Bookings & Calendar ---
   getBookings() {
     const raw = localStorage.getItem(this.storageKeyPrefix + 'bookings');
-    if (!raw || raw === '[]') {
-      localStorage.setItem(this.storageKeyPrefix + 'bookings', JSON.stringify(INITIAL_BOOKINGS));
+    let list = [];
+    try {
+      list = raw ? JSON.parse(raw) : [];
+    } catch(e) { list = []; }
+
+    if (!Array.isArray(list) || list.length === 0 || !list[0].roomId) {
+      this.saveBookings(INITIAL_BOOKINGS);
       return INITIAL_BOOKINGS;
     }
-    return JSON.parse(raw);
+
+    return list.map((b, idx) => ({
+      id: b.id || `BKG-${7000 + idx}`,
+      guestName: b.guestName || 'Resident Student',
+      guestEmail: b.guestEmail || 'resident@college.edu',
+      roomId: b.roomId || 'A-101-A',
+      roomNumber: b.roomNumber || b.roomId || 'A-101-A',
+      startDate: b.startDate || b.checkIn || '2026-08-20',
+      endDate: b.endDate || b.checkOut || '2026-09-08',
+      checkIn: b.checkIn || b.startDate || '2026-08-20',
+      checkOut: b.checkOut || b.endDate || '2026-09-08',
+      status: b.status || 'Checked-In',
+      pax: b.pax || 1,
+      totalAmount: b.totalAmount || 1200,
+      paymentStatus: b.paymentStatus || 'Paid',
+      channel: b.channel || 'Campus Allotment',
+      color: b.color || 'teal'
+    }));
   }
 
   saveBookings(bookings) {

@@ -18,24 +18,32 @@ class GuestsModule {
     const container = document.getElementById('view-guests');
     if (!container) return;
 
-    const allStudents = window.store.getStudents ? window.store.getStudents() : [];
+    let allStudents = [];
+    try {
+      allStudents = (window.store && window.store.getStudents) ? window.store.getStudents() : [];
+    } catch(e) {
+      allStudents = [];
+    }
 
     // Summary counts
     const totalCount = allStudents.length;
-    const inHouseCount = allStudents.filter(g => g.roomAssigned).length;
-    const paidCount = allStudents.filter(g => g.feeStatus === 'Paid').length;
-    const duesCount = allStudents.filter(g => g.pendingFees > 0).length;
+    const inHouseCount = allStudents.filter(g => g && g.roomAssigned).length;
+    const paidCount = allStudents.filter(g => g && g.feeStatus === 'Paid').length;
+    const duesCount = allStudents.filter(g => g && (g.pendingFees > 0)).length;
 
-    // Filter logic
+    // Filter logic with 100% null safety
+    const q = (this.searchQuery || '').toLowerCase().trim();
     const filteredStudents = allStudents.filter(g => {
-      const matchesSearch = !this.searchQuery ||
-        g.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        g.email.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        g.rollNo.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        (g.phone && g.phone.includes(this.searchQuery)) ||
-        (g.roomAssigned && g.roomAssigned.toLowerCase().includes(this.searchQuery.toLowerCase()));
+      if (!g) return false;
+      const name = String(g.name || '').toLowerCase();
+      const email = String(g.email || '').toLowerCase();
+      const rollNo = String(g.rollNo || g.id || '').toLowerCase();
+      const phone = String(g.phone || '');
+      const room = String(g.roomAssigned || '').toLowerCase();
+      const dept = String(g.department || '').toLowerCase();
 
-      const matchesDept = this.deptFilter === 'ALL' || (g.department && g.department.includes(this.deptFilter));
+      const matchesSearch = !q || name.includes(q) || email.includes(q) || rollNo.includes(q) || phone.includes(q) || room.includes(q) || dept.includes(q);
+      const matchesDept = this.deptFilter === 'ALL' || dept.includes(this.deptFilter.toLowerCase());
       const matchesStatus = this.statusFilter === 'ALL' || (this.statusFilter === 'Allotted' ? !!g.roomAssigned : !g.roomAssigned);
 
       return matchesSearch && matchesDept && matchesStatus;
@@ -177,21 +185,21 @@ class GuestsModule {
                 <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
                   <td>
                     <div class="flex items-center gap-3">
-                      <img src="${g.avatar}" alt="${g.name}" class="w-9 h-9 rounded-full object-cover border border-slate-200 dark:border-slate-700" />
+                      <img src="${g.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'}" alt="${g.name || 'Student'}" class="w-9 h-9 rounded-full object-cover border border-slate-200 dark:border-slate-700" />
                       <div>
-                        <div class="font-bold text-slate-900 dark:text-white text-xs">${g.name}</div>
-                        <div class="text-[11px] text-slate-400">${g.email}</div>
+                        <div class="font-bold text-slate-900 dark:text-white text-xs">${g.name || 'Student'}</div>
+                        <div class="text-[11px] text-slate-400">${g.email || 'N/A'}</div>
                       </div>
                     </div>
                   </td>
                   <td>
-                    <div class="text-xs text-slate-800 dark:text-slate-200 font-mono font-bold">${g.rollNo}</div>
-                    <div class="text-[10px] text-slate-400 truncate max-w-[140px]">${g.department}</div>
+                    <div class="text-xs text-slate-800 dark:text-slate-200 font-mono font-bold">${g.rollNo || g.id || 'N/A'}</div>
+                    <div class="text-[10px] text-slate-400 truncate max-w-[140px]">${g.department || 'General'}</div>
                   </td>
                   <td>
                     ${g.roomAssigned ? `
                       <div class="font-bold text-teal-700 dark:text-teal-400 text-xs">${g.roomAssigned} (${g.bedNumber || 'Bed A'})</div>
-                      <div class="text-[10px] text-slate-400">${g.hostelBlock}</div>
+                      <div class="text-[10px] text-slate-400">${g.hostelBlock || 'Hostel'}</div>
                     ` : `
                       <span class="text-xs text-amber-600 italic">Pending Allotment</span>
                     `}
@@ -204,7 +212,7 @@ class GuestsModule {
                   </td>
                   <td>
                     <div class="text-xs text-slate-700 dark:text-slate-300 font-medium">${g.guardianName || 'Guardian'}</div>
-                    <div class="text-[10px] text-slate-400">${g.guardianPhone || g.phone}</div>
+                    <div class="text-[10px] text-slate-400">${g.guardianPhone || g.phone || 'N/A'}</div>
                   </td>
                   <td class="text-right">
                     <div class="flex items-center justify-end gap-1.5">
@@ -262,11 +270,11 @@ class GuestsModule {
       <div class="p-6 space-y-5 overflow-y-auto flex-1 text-xs">
         
         <div class="flex items-center gap-4">
-          <img src="${student.avatar}" alt="${student.name}" class="w-14 h-14 rounded-full object-cover border-2 border-teal-500 shadow" />
+          <img src="${student.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'}" alt="${student.name}" class="w-14 h-14 rounded-full object-cover border-2 border-teal-500 shadow" />
           <div>
             <h4 class="text-base font-black text-slate-900 dark:text-white">${student.name}</h4>
-            <div class="text-slate-500 font-mono font-bold">${student.rollNo}</div>
-            <div class="text-[11px] text-teal-600 font-semibold mt-0.5">${student.department}</div>
+            <div class="text-slate-500 font-mono font-bold">${student.rollNo || student.id}</div>
+            <div class="text-[11px] text-teal-600 font-semibold mt-0.5">${student.department || 'General'}</div>
           </div>
         </div>
 
@@ -281,22 +289,22 @@ class GuestsModule {
           </div>
           <div class="flex justify-between">
             <span class="text-slate-400">Fee Status:</span>
-            <span class="font-bold ${student.feeStatus === 'Paid' ? 'text-emerald-600' : 'text-rose-500'}">${student.feeStatus} (${student.pendingFees === 0 ? 'No Dues' : '$' + student.pendingFees + ' Pending'})</span>
+            <span class="font-bold ${student.feeStatus === 'Paid' ? 'text-emerald-600' : 'text-rose-500'}">${student.feeStatus || 'Paid'} (${(student.pendingFees || 0) === 0 ? 'No Dues' : '$' + student.pendingFees + ' Pending'})</span>
           </div>
         </div>
 
         <div class="space-y-2">
           <div class="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[10px]">Contact & Guardian</div>
           <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg space-y-1">
-            <div>📞 Student Phone: <strong>${student.phone}</strong></div>
-            <div>✉️ Email: <strong>${student.email}</strong></div>
-            <div>👨‍👩‍👧 Guardian: <strong>${student.guardianName || 'Parent'} (${student.guardianPhone || student.phone})</strong></div>
+            <div>📞 Student Phone: <strong>${student.phone || 'N/A'}</strong></div>
+            <div>✉️ Email: <strong>${student.email || 'N/A'}</strong></div>
+            <div>👨‍👩‍👧 Guardian: <strong>${student.guardianName || 'Parent'} (${student.guardianPhone || student.phone || 'N/A'})</strong></div>
             <div>📍 Home Address: <span class="text-slate-500">${student.address || 'Maharashtra, India'}</span></div>
           </div>
         </div>
 
         <div class="pt-4 border-t border-slate-200 dark:border-slate-700 flex items-center gap-2">
-          <button onclick="window.app.showToast('SMS Access Notice dispatched to ' + student.phone, 'success')" class="flex-1 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-bold text-xs">
+          <button onclick="window.app.showToast('SMS Access Notice dispatched to ' + '${student.phone || 'student'}', 'success')" class="flex-1 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-bold text-xs">
             📲 Send SMS Notice
           </button>
           <button onclick="window.guests.closeDrawer()" class="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg font-semibold text-slate-600 dark:text-slate-300 text-xs">
@@ -320,7 +328,7 @@ class GuestsModule {
     let csv = 'Roll No,Name,Email,Phone,Department,Hostel Block,Room,Fee Status,Pending Dues\n';
     
     students.forEach(s => {
-      csv += `"${s.rollNo}","${s.name}","${s.email}","${s.phone}","${s.department}","${s.hostelBlock}","${s.roomAssigned || 'N/A'}","${s.feeStatus}","$${s.pendingFees || 0}"\n`;
+      csv += `"${s.rollNo || s.id}","${s.name}","${s.email}","${s.phone}","${s.department}","${s.hostelBlock}","${s.roomAssigned || 'N/A'}","${s.feeStatus}","$${s.pendingFees || 0}"\n`;
     });
 
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
