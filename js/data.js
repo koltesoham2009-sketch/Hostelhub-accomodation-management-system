@@ -1,7 +1,9 @@
 /**
- * HostelHub - Complete Data Store & Extended Dataset
- * Manages Hostel Blocks, Rooms, Students/Guests, Bookings, Room Allocations, Payments, Complaints, Alerts, and LocalStorage Sync.
+ * HostelHub - Complete Data Store & Auto-Seeding Dataset (v2.5)
+ * Manages Hostel Blocks, Rooms, Students, Bookings, Allocations, Payments, Complaints, and LocalStorage Sync.
  */
+
+const DATA_VERSION = '2.5';
 
 const HOSTEL_BLOCKS = [
   { id: 'BLOCK-A', name: 'Block A (Boys Hostel)', type: 'Boys', totalFloors: 3, totalRooms: 18, warden: 'Dr. R. K. Sharma', contact: '+91 98765 43210' },
@@ -10,7 +12,7 @@ const HOSTEL_BLOCKS = [
 ];
 
 const INITIAL_ROOMS = [
-  // Block A (Boys Hostel - Floor 1: Dorms & Standard)
+  // Block A (Boys Hostel - Floor 1 & 2)
   { id: 'A-101-A', number: 'A-101-A', block: 'BLOCK-A', floor: 1, type: '4-Bed Dorm', bedType: 'Single Bunk', capacity: 1, rate: 1200, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-001', currentGuest: 'Rohan Sharma' },
   { id: 'A-101-B', number: 'A-101-B', block: 'BLOCK-A', floor: 1, type: '4-Bed Dorm', bedType: 'Single Bunk', capacity: 1, rate: 1200, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-002', currentGuest: 'Aditya Verma' },
   { id: 'A-101-C', number: 'A-101-C', block: 'BLOCK-A', floor: 1, type: '4-Bed Dorm', bedType: 'Single Bunk', capacity: 1, rate: 1200, status: 'Available', condition: 'Clean', currentStudentId: null, currentGuest: null },
@@ -67,7 +69,36 @@ const INITIAL_STUDENTS = [
     totalFees: 12000,
     paidFees: 12000,
     pendingFees: 0,
-    notes: 'Merit scholar. Top floor study access required.'
+    notes: 'Merit scholar. Quiet room preferred.'
+  },
+  {
+    id: 'STU-2024-002',
+    name: 'Aditya Verma',
+    rollNo: '2024-CSE-043',
+    email: 'aditya.verma@college.edu',
+    password: 'password123',
+    phone: '+91 98230 44556',
+    department: 'Computer Science & Engineering',
+    year: '3rd Year (Semester 5)',
+    gender: 'Male',
+    loyaltyTier: 'Silver',
+    loyaltyPoints: 750,
+    currentStatus: 'In-House',
+    totalStays: 2,
+    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=80',
+    hostelBlock: 'Block A (Boys Hostel)',
+    roomAssigned: 'A-101-B',
+    bedNumber: 'Bed B',
+    allocationDate: '2026-07-15',
+    guardianName: 'Prakash Verma',
+    guardianPhone: '+91 98230 11000',
+    emergencyContact: '+91 98230 44556',
+    address: '77 Shivaji Nagar, Pune',
+    feeStatus: 'Paid',
+    totalFees: 12000,
+    paidFees: 12000,
+    pendingFees: 0,
+    notes: 'Roommate of Rohan Sharma.'
   },
   {
     id: 'STU-2024-006',
@@ -99,35 +130,6 @@ const INITIAL_STUDENTS = [
     notes: 'Resident Representative for Block B.'
   },
   {
-    id: 'STU-2024-005',
-    name: 'Alexander Wright',
-    rollNo: '2024-MECH-099',
-    email: 'alex.wright@wanderlust.io',
-    password: 'password123',
-    phone: '+44 7700 900452',
-    department: 'Mechanical Engineering',
-    year: '4th Year (Semester 7)',
-    gender: 'Male',
-    loyaltyTier: 'Silver',
-    loyaltyPoints: 890,
-    currentStatus: 'In-House',
-    totalStays: 2,
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-    hostelBlock: 'Block A (Boys Hostel)',
-    roomAssigned: 'A-201',
-    bedNumber: 'Bed A (Single)',
-    allocationDate: '2026-07-10',
-    guardianName: 'Emma Wright',
-    guardianPhone: '+44 7700 900111',
-    emergencyContact: '+44 7700 900452',
-    address: 'London, United Kingdom',
-    feeStatus: 'Paid',
-    totalFees: 20000,
-    paidFees: 20000,
-    pendingFees: 0,
-    notes: 'Exchange scholar from UK.'
-  },
-  {
     id: 'STU-2024-007',
     name: 'Sophia Chen',
     rollNo: '2024-AI-005',
@@ -155,6 +157,35 @@ const INITIAL_STUDENTS = [
     paidFees: 0,
     pendingFees: 16000,
     notes: 'Robotics lab project resident.'
+  },
+  {
+    id: 'STU-2024-005',
+    name: 'Alexander Wright',
+    rollNo: '2024-MECH-099',
+    email: 'alex.wright@wanderlust.io',
+    password: 'password123',
+    phone: '+44 7700 900452',
+    department: 'Mechanical Engineering',
+    year: '4th Year (Semester 7)',
+    gender: 'Male',
+    loyaltyTier: 'Silver',
+    loyaltyPoints: 890,
+    currentStatus: 'In-House',
+    totalStays: 2,
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+    hostelBlock: 'Block A (Boys Hostel)',
+    roomAssigned: 'A-201',
+    bedNumber: 'Bed A (Single)',
+    allocationDate: '2026-07-10',
+    guardianName: 'Emma Wright',
+    guardianPhone: '+44 7700 900111',
+    emergencyContact: '+44 7700 900452',
+    address: 'London, United Kingdom',
+    feeStatus: 'Paid',
+    totalFees: 20000,
+    paidFees: 20000,
+    pendingFees: 0,
+    notes: 'Exchange scholar from UK.'
   },
   {
     id: 'STU-2024-003',
@@ -195,12 +226,14 @@ const INITIAL_BOOKINGS = [
     roomId: 'A-101-A',
     roomNumber: 'A-101-A',
     startDate: '2026-08-20',
-    endDate: '2026-09-05',
+    endDate: '2026-09-08',
+    checkIn: '2026-08-20',
+    checkOut: '2026-09-08',
     status: 'Checked-In',
     pax: 1,
     totalAmount: 1200,
     paymentStatus: 'Paid',
-    channel: 'Direct Campus Allotment',
+    channel: 'Campus Allotment',
     color: 'teal'
   },
   {
@@ -210,7 +243,9 @@ const INITIAL_BOOKINGS = [
     roomId: 'A-101-B',
     roomNumber: 'A-101-B',
     startDate: '2026-08-22',
-    endDate: '2026-09-02',
+    endDate: '2026-09-05',
+    checkIn: '2026-08-22',
+    checkOut: '2026-09-05',
     status: 'Checked-In',
     pax: 1,
     totalAmount: 1200,
@@ -225,7 +260,9 @@ const INITIAL_BOOKINGS = [
     roomId: 'A-102-A',
     roomNumber: 'A-102-A',
     startDate: '2026-08-24',
-    endDate: '2026-08-31',
+    endDate: '2026-09-02',
+    checkIn: '2026-08-24',
+    checkOut: '2026-09-02',
     status: 'Confirmed',
     pax: 1,
     totalAmount: 1800,
@@ -240,7 +277,9 @@ const INITIAL_BOOKINGS = [
     roomId: 'A-102-B',
     roomNumber: 'A-102-B',
     startDate: '2026-08-25',
-    endDate: '2026-09-04',
+    endDate: '2026-09-06',
+    checkIn: '2026-08-25',
+    checkOut: '2026-09-06',
     status: 'Checked-In',
     pax: 1,
     totalAmount: 1800,
@@ -254,8 +293,10 @@ const INITIAL_BOOKINGS = [
     guestEmail: 'alex.wright@wanderlust.io',
     roomId: 'A-201',
     roomNumber: 'A-201',
-    startDate: '2026-08-24',
-    endDate: '2026-09-06',
+    startDate: '2026-08-23',
+    endDate: '2026-09-07',
+    checkIn: '2026-08-23',
+    checkOut: '2026-09-07',
     status: 'Checked-In',
     pax: 1,
     totalAmount: 2500,
@@ -270,7 +311,9 @@ const INITIAL_BOOKINGS = [
     roomId: 'B-101-A',
     roomNumber: 'B-101-A',
     startDate: '2026-08-20',
-    endDate: '2026-09-08',
+    endDate: '2026-09-10',
+    checkIn: '2026-08-20',
+    checkOut: '2026-09-10',
     status: 'Checked-In',
     pax: 1,
     totalAmount: 1600,
@@ -285,7 +328,9 @@ const INITIAL_BOOKINGS = [
     roomId: 'B-101-B',
     roomNumber: 'B-101-B',
     startDate: '2026-08-22',
-    endDate: '2026-09-03',
+    endDate: '2026-09-04',
+    checkIn: '2026-08-22',
+    checkOut: '2026-09-04',
     status: 'Confirmed',
     pax: 1,
     totalAmount: 1600,
@@ -300,7 +345,9 @@ const INITIAL_BOOKINGS = [
     roomId: 'B-201',
     roomNumber: 'B-201',
     startDate: '2026-08-25',
-    endDate: '2026-09-01',
+    endDate: '2026-09-03',
+    checkIn: '2026-08-25',
+    checkOut: '2026-09-03',
     status: 'Checked-In',
     pax: 1,
     totalAmount: 2600,
@@ -315,7 +362,9 @@ const INITIAL_BOOKINGS = [
     roomId: 'B-203',
     roomNumber: 'B-203',
     startDate: '2026-08-24',
-    endDate: '2026-08-30',
+    endDate: '2026-09-01',
+    checkIn: '2026-08-24',
+    checkOut: '2026-09-01',
     status: 'Checked-In',
     pax: 1,
     totalAmount: 1400,
@@ -330,12 +379,14 @@ const INITIAL_BOOKINGS = [
     roomId: 'C-301',
     roomNumber: 'C-301',
     startDate: '2026-08-21',
-    endDate: '2026-09-07',
+    endDate: '2026-09-09',
+    checkIn: '2026-08-21',
+    checkOut: '2026-09-09',
     status: 'Checked-In',
     pax: 2,
     totalAmount: 3500,
     paymentStatus: 'Paid',
-    channel: 'Research Fellow Allotment',
+    channel: 'Scholar Fellow Allotment',
     color: 'purple'
   }
 ];
@@ -547,7 +598,7 @@ const NOTICE_BOARD = [
 ];
 
 /**
- * Enhanced HostelHub Data Store with LocalStorage Persistence
+ * HostelDataStore with auto-migration and robust fallbacks
  */
 class HostelDataStore {
   constructor() {
@@ -556,12 +607,14 @@ class HostelDataStore {
   }
 
   initStore() {
-    if (!localStorage.getItem(this.storageKeyPrefix + 'students') || !localStorage.getItem(this.storageKeyPrefix + 'bookings')) {
+    const version = localStorage.getItem(this.storageKeyPrefix + 'version');
+    if (version !== DATA_VERSION) {
       this.resetToDefaults();
     }
   }
 
   resetToDefaults() {
+    localStorage.setItem(this.storageKeyPrefix + 'version', DATA_VERSION);
     localStorage.setItem(this.storageKeyPrefix + 'blocks', JSON.stringify(HOSTEL_BLOCKS));
     localStorage.setItem(this.storageKeyPrefix + 'rooms', JSON.stringify(INITIAL_ROOMS));
     localStorage.setItem(this.storageKeyPrefix + 'students', JSON.stringify(INITIAL_STUDENTS));
@@ -576,12 +629,14 @@ class HostelDataStore {
 
   // --- Blocks ---
   getBlocks() {
-    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'blocks') || JSON.stringify(HOSTEL_BLOCKS));
+    const raw = localStorage.getItem(this.storageKeyPrefix + 'blocks');
+    return raw ? JSON.parse(raw) : HOSTEL_BLOCKS;
   }
 
   // --- Rooms ---
   getRooms() {
-    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'rooms') || JSON.stringify(INITIAL_ROOMS));
+    const raw = localStorage.getItem(this.storageKeyPrefix + 'rooms');
+    return raw ? JSON.parse(raw) : INITIAL_ROOMS;
   }
 
   saveRooms(rooms) {
@@ -616,9 +671,14 @@ class HostelDataStore {
     this.saveRooms(rooms);
   }
 
-  // --- Students / Guests CRM ---
+  // --- Students / CRM Directory ---
   getStudents() {
-    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'students') || JSON.stringify(INITIAL_STUDENTS));
+    const raw = localStorage.getItem(this.storageKeyPrefix + 'students');
+    if (!raw || raw === '[]') {
+      localStorage.setItem(this.storageKeyPrefix + 'students', JSON.stringify(INITIAL_STUDENTS));
+      return INITIAL_STUDENTS;
+    }
+    return JSON.parse(raw);
   }
 
   saveStudents(students) {
@@ -636,7 +696,6 @@ class HostelDataStore {
     return student;
   }
 
-  // Alias for CRM directory compatibility
   getGuests() {
     return this.getStudents();
   }
@@ -655,7 +714,12 @@ class HostelDataStore {
 
   // --- Bookings & Calendar ---
   getBookings() {
-    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'bookings') || JSON.stringify(INITIAL_BOOKINGS));
+    const raw = localStorage.getItem(this.storageKeyPrefix + 'bookings');
+    if (!raw || raw === '[]') {
+      localStorage.setItem(this.storageKeyPrefix + 'bookings', JSON.stringify(INITIAL_BOOKINGS));
+      return INITIAL_BOOKINGS;
+    }
+    return JSON.parse(raw);
   }
 
   saveBookings(bookings) {
@@ -671,7 +735,8 @@ class HostelDataStore {
 
   // --- Room Allocations ---
   getAllocations() {
-    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'allocations') || JSON.stringify(INITIAL_ALLOCATIONS));
+    const raw = localStorage.getItem(this.storageKeyPrefix + 'allocations');
+    return raw ? JSON.parse(raw) : INITIAL_ALLOCATIONS;
   }
 
   saveAllocations(allocations) {
@@ -696,7 +761,6 @@ class HostelDataStore {
       allot.allottedBy = allottedBy;
       this.saveAllocations(allocations);
 
-      // Update room status
       const rooms = this.getRooms();
       const room = rooms.find(r => r.id === roomId);
       if (room) {
@@ -706,7 +770,6 @@ class HostelDataStore {
         this.saveRooms(rooms);
       }
 
-      // Update student profile
       const students = this.getStudents();
       const student = students.find(s => s.id === allot.studentId);
       if (student) {
@@ -720,7 +783,8 @@ class HostelDataStore {
 
   // --- Payments & Fees ---
   getPayments() {
-    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'payments') || JSON.stringify(INITIAL_PAYMENTS));
+    const raw = localStorage.getItem(this.storageKeyPrefix + 'payments');
+    return raw ? JSON.parse(raw) : INITIAL_PAYMENTS;
   }
 
   savePayments(payments) {
@@ -732,7 +796,6 @@ class HostelDataStore {
     payments.unshift(pay);
     this.savePayments(payments);
 
-    // Update student balance
     const students = this.getStudents();
     const student = students.find(s => s.id === pay.studentId);
     if (student) {
@@ -746,7 +809,8 @@ class HostelDataStore {
 
   // --- Complaints ---
   getComplaints() {
-    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'complaints') || JSON.stringify(INITIAL_COMPLAINTS));
+    const raw = localStorage.getItem(this.storageKeyPrefix + 'complaints');
+    return raw ? JSON.parse(raw) : INITIAL_COMPLAINTS;
   }
 
   saveComplaints(complaints) {
@@ -781,9 +845,10 @@ class HostelDataStore {
     }
   }
 
-  // --- Alerts (Operational) ---
+  // --- Alerts ---
   getAlerts() {
-    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'alerts') || JSON.stringify(INITIAL_ALERTS));
+    const raw = localStorage.getItem(this.storageKeyPrefix + 'alerts');
+    return raw ? JSON.parse(raw) : INITIAL_ALERTS;
   }
 
   saveAlerts(alerts) {
@@ -805,7 +870,6 @@ class HostelDataStore {
     this.saveAlerts(alerts);
   }
 
-  // --- Revenue / Finances ---
   getRevenue() {
     return {
       currentWeekTotal: 142500,
@@ -824,11 +888,13 @@ class HostelDataStore {
   }
 
   getMessMenu() {
-    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'mess_menu') || JSON.stringify(MESS_MENU));
+    const raw = localStorage.getItem(this.storageKeyPrefix + 'mess_menu');
+    return raw ? JSON.parse(raw) : MESS_MENU;
   }
 
   getNotices() {
-    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'notices') || JSON.stringify(NOTICE_BOARD));
+    const raw = localStorage.getItem(this.storageKeyPrefix + 'notices');
+    return raw ? JSON.parse(raw) : NOTICE_BOARD;
   }
 }
 

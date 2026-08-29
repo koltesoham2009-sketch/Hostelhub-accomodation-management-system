@@ -5,10 +5,8 @@
 
 class CalendarModule {
   constructor() {
-    this.container = document.getElementById('view-calendar');
-    // Start date defaults to 2 days before today (Aug 24, 2026)
-    this.startDate = new Date(2026, 7, 24);
-    this.daySpan = 14; // Default 14-day timeline
+    this.startDate = new Date(2026, 7, 20); // August 20, 2026
+    this.daySpan = 14;
     this.roomTypeFilter = 'ALL';
     this.selectedFloor = 'ALL';
   }
@@ -18,7 +16,9 @@ class CalendarModule {
   }
 
   render() {
-    if (!this.container) return;
+    const container = document.getElementById('view-calendar');
+    if (!container) return;
+
     const allRooms = window.store.getRooms();
     const allBookings = window.store.getBookings ? window.store.getBookings() : [];
 
@@ -49,22 +49,22 @@ class CalendarModule {
       `${startMonth} ${dates[0].dayNumber} - ${dates[dates.length - 1].dayNumber}, 2026` :
       `${startMonth} ${dates[0].dayNumber} - ${endMonth} ${dates[dates.length - 1].dayNumber}, 2026`;
 
-    this.container.innerHTML = `
+    container.innerHTML = `
       <!-- Calendar Header & Controls -->
       <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
         <div>
           <div class="flex items-center gap-2">
             <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">Booking Calendar Matrix</h1>
             <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-700 dark:bg-teal-950/40 dark:text-teal-300 border border-teal-200 dark:border-teal-800">
-              Gantt Timeline
+              ${allBookings.length} Active Bookings
             </span>
           </div>
-          <p class="text-sm text-slate-500 mt-0.5">Visual unit allocation timeline, reservations, and maintenance scheduling</p>
+          <p class="text-sm text-slate-500 mt-0.5">Visual timeline of resident stays, reservations, and room maintenance schedules</p>
         </div>
 
         <div class="flex items-center gap-3">
-          <button onclick="window.calendar.goToToday()" class="px-3 py-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-200 shadow-sm">
-            Today
+          <button onclick="window.calendar.goToToday()" class="px-3 py-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 text-slate-700 dark:text-slate-200 rounded-lg text-xs font-bold shadow-sm">
+            Aug 2026
           </button>
           <div class="flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-0.5 shadow-sm">
             <button onclick="window.calendar.shiftDays(-7)" class="p-1.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors" title="Previous 7 Days">
@@ -76,9 +76,29 @@ class CalendarModule {
             </button>
           </div>
 
-          <button onclick="window.allocations.openApplyModal()" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg shadow-sm font-semibold text-xs transition-all flex items-center gap-2">
-            + New Reservation / Allotment
+          <button onclick="window.app.openReservationModal()" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg shadow-sm font-semibold text-xs transition-all flex items-center gap-2">
+            + New Booking
           </button>
+        </div>
+      </div>
+
+      <!-- Gantt Legend -->
+      <div class="flex items-center gap-4 mb-4 text-xs font-medium text-slate-500 dark:text-slate-400">
+        <div class="flex items-center gap-1.5">
+          <span class="w-3 h-3 rounded-sm bg-teal-600"></span>
+          <span>Checked In</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="w-3 h-3 rounded-sm bg-emerald-600"></span>
+          <span>Confirmed</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="w-3 h-3 rounded-sm bg-amber-500"></span>
+          <span>Pending</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="w-3 h-3 rounded-sm bg-purple-600"></span>
+          <span>PG / Scholar</span>
         </div>
       </div>
 
@@ -88,12 +108,11 @@ class CalendarModule {
         <div class="overflow-x-auto dark-scrollbar">
           <div class="min-w-[1000px] gantt-container">
             
-            <!-- Matrix Header: Sticky Room Title + Date Columns -->
+            <!-- Matrix Header -->
             <div class="flex border-b border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-850 sticky top-0 z-20">
               
-              <!-- Sticky Room Column Header -->
               <div class="w-[180px] min-w-[180px] p-3 text-xs font-bold text-slate-500 uppercase tracking-wider border-r-2 border-slate-200 dark:border-slate-800 sticky left-0 bg-slate-50 dark:bg-slate-900 z-30 flex items-center justify-between">
-                <span>Room / Bed Unit</span>
+                <span>Room / Unit</span>
                 <span class="text-[10px] text-slate-400 font-semibold">${rooms.length} units</span>
               </div>
 
@@ -110,7 +129,7 @@ class CalendarModule {
 
             </div>
 
-            <!-- Matrix Body: One row per room -->
+            <!-- Matrix Body -->
             <div class="divide-y divide-slate-100 dark:divide-slate-800">
               ${rooms.map(room => {
                 const roomBookings = allBookings.filter(b => b.roomId === room.id || b.roomNumber === room.number);
@@ -118,12 +137,12 @@ class CalendarModule {
                 return `
                   <div class="gantt-row group" data-room-id="${room.id}">
                     
-                    <!-- Sticky Left Room Info Cell -->
+                    <!-- Sticky Left Room Info -->
                     <div class="gantt-room-cell p-2.5 flex items-center justify-between">
                       <div>
                         <div class="flex items-center gap-1.5">
                           <span class="font-bold text-xs text-slate-900 dark:text-white">${room.number}</span>
-                          <span class="text-[10px] text-slate-400 font-medium">${room.block || 'F' + room.floor}</span>
+                          <span class="text-[10px] text-slate-400 font-medium">${room.block ? room.block.split(' ')[0] : 'F' + room.floor}</span>
                         </div>
                         <div class="text-[10px] text-slate-500 dark:text-slate-400 truncate max-w-[110px] font-medium" title="${room.type}">
                           ${room.type}
@@ -143,7 +162,7 @@ class CalendarModule {
                         <div 
                           class="gantt-day-cell ${d.isToday ? 'today' : ''}" 
                           onclick="window.calendar.handleCellClick('${room.id}', '${d.dateStr}')"
-                          title="Click to reserve ${room.number} on ${d.dateStr}">
+                          title="Click to book ${room.number} on ${d.dateStr}">
                         </div>
                       `).join('')}
 
@@ -176,11 +195,11 @@ class CalendarModule {
     }
 
     const cellWidth = 90;
-    const startObj = new Date(checkIn);
-    const timelineStartObj = new Date(startDateStr);
+    const startObj = new Date(checkIn + 'T00:00:00');
+    const timelineStartObj = new Date(startDateStr + 'T00:00:00');
     const dayDiffStart = Math.max(0, Math.round((startObj - timelineStartObj) / (1000 * 60 * 60 * 24)));
     
-    const endObj = new Date(checkOut);
+    const endObj = new Date(checkOut + 'T00:00:00');
     const effectiveStart = startObj < timelineStartObj ? timelineStartObj : startObj;
     const effectiveEnd = endObj;
     const nightSpan = Math.max(1, Math.round((effectiveEnd - effectiveStart) / (1000 * 60 * 60 * 24)));
@@ -188,9 +207,7 @@ class CalendarModule {
     const leftPos = dayDiffStart * cellWidth + 4;
     const blockWidth = Math.max(80, nightSpan * cellWidth - 8);
 
-    const isMaintenance = booking.status === 'Maintenance';
     const statusClass = 
-      isMaintenance ? 'booking-maintenance' :
       booking.status === 'Checked-In' || booking.status === 'Checked In' ? 'booking-checked-in' :
       booking.status === 'Pending' ? 'booking-pending' : 'booking-confirmed';
 
@@ -198,11 +215,11 @@ class CalendarModule {
       <div 
         class="gantt-booking-block ${statusClass}"
         style="left: ${leftPos}px; width: ${blockWidth}px;"
-        onclick="event.stopPropagation(); window.calendar.openBookingDetails('${booking.id}')"
+        onclick="event.stopPropagation(); window.app.openBookingDetailsModal('${booking.id}')"
         title="${booking.guestName} (${checkIn} to ${checkOut})">
         
         <span class="truncate text-[11px] font-bold">
-          ${isMaintenance ? '🛠️ ' : '👤 '}${booking.guestName}
+          👤 ${booking.guestName}
         </span>
         <span class="text-[9px] opacity-90 font-normal shrink-0">
           (${nightSpan}d)
@@ -218,33 +235,18 @@ class CalendarModule {
   }
 
   goToToday() {
-    this.startDate = new Date(2026, 7, 24);
-    this.render();
-  }
-
-  setDaySpan(span) {
-    this.daySpan = span;
-    this.render();
-  }
-
-  filterType(type) {
-    this.roomTypeFilter = type;
-    this.render();
-  }
-
-  filterFloor(floor) {
-    this.selectedFloor = floor;
+    this.startDate = new Date(2026, 7, 20);
     this.render();
   }
 
   handleCellClick(roomId, dateStr) {
-    window.allocations.openApplyModal();
-  }
-
-  openBookingDetails(bookingId) {
-    const bk = (window.store.getBookings ? window.store.getBookings() : []).find(b => b.id === bookingId);
-    if (!bk) return;
-    window.app.showToast(`Booking ${bk.id}: ${bk.guestName} in Unit ${bk.roomNumber} (${bk.status})`, 'info');
+    const nextDate = new Date(dateStr);
+    nextDate.setDate(nextDate.getDate() + 14);
+    window.app.openReservationModal({
+      roomId,
+      checkIn: dateStr,
+      checkOut: nextDate.toISOString().split('T')[0]
+    });
   }
 }
 
