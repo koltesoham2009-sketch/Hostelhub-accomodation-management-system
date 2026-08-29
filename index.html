@@ -57,11 +57,18 @@
       </div>
     </div>
 
-    <!-- Quick Action / Login CTA in Sidebar -->
-    <div class="px-4 py-3">
+    <!-- Quick Action / Reservation CTA in Sidebar -->
+    <div class="px-4 py-3 space-y-2">
+      <button 
+        onclick="window.app.openReservationModal()"
+        class="w-full py-2.5 px-3 bg-teal-500 hover:bg-teal-400 active:bg-teal-600 text-slate-950 font-black text-xs rounded-lg shadow-sm flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5">
+        <span>+</span>
+        <span>New Booking / Reserve</span>
+      </button>
+
       <button 
         onclick="window.auth.openAuthModal('switch')"
-        class="w-full py-2 px-3 bg-teal-600 hover:bg-teal-500 active:bg-teal-700 text-white font-bold text-xs rounded-lg shadow-sm flex items-center justify-center gap-2 transition-all">
+        class="w-full py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-[11px] rounded-lg border border-slate-700 flex items-center justify-center gap-1.5 transition-all">
         <span>⇄</span>
         <span>Switch Portal / Role</span>
       </button>
@@ -107,19 +114,14 @@
         Hostel & Rooms
       </a>
 
-      <!-- Admin Specific Links -->
-      <div class="pt-3 pb-1 nav-admin-only">
-        <span class="px-3.5 text-[10px] font-bold uppercase tracking-wider text-slate-500">Administration</span>
-      </div>
-
-      <a href="#calendar" onclick="window.app.navigate('calendar')" data-view="calendar" class="nav-link nav-admin-only flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-slate-300">
+      <a href="#calendar" onclick="window.app.navigate('calendar')" data-view="calendar" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-slate-300">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
         </svg>
         Booking Calendar
       </a>
 
-      <a href="#guests" onclick="window.app.navigate('guests')" data-view="guests" class="nav-link nav-admin-only flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-slate-300">
+      <a href="#guests" onclick="window.app.navigate('guests')" data-view="guests" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-slate-300">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
         </svg>
@@ -259,6 +261,18 @@
   </div>
 
   <!-- ================= MODALS ================= -->
+
+  <!-- New Reservation / Booking Modal -->
+  <div id="modal-reservation" class="modal-wrapper hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop absolute inset-0" onclick="window.app.closeModal('modal-reservation')"></div>
+    <div id="reservation-modal-content" class="relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-lg overflow-hidden z-10 max-h-[90vh] overflow-y-auto"></div>
+  </div>
+
+  <!-- Booking Details Inspection Modal -->
+  <div id="modal-booking-details" class="modal-wrapper hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop absolute inset-0" onclick="window.app.closeModal('modal-booking-details')"></div>
+    <div id="booking-details-modal-content" class="relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-md overflow-hidden z-10"></div>
+  </div>
 
   <!-- Auth Modal (Login / Register / Role Switch) -->
   <div id="modal-auth" class="modal-wrapper hidden fixed inset-0 z-50 flex items-center justify-center p-4">
