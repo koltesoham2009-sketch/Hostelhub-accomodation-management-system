@@ -112,10 +112,12 @@ class HostelHubApp {
 
   // --- View Routing & Navigation ---
   navigate(viewId) {
-    const views = ['dashboard', 'student-home', 'rooms', 'allocations', 'payments', 'complaints', 'calendar', 'guests', 'settings'];
+    const views = ['dashboard', 'student-home', 'rooms', 'allocations', 'payments', 'complaints', 'calendar', 'settings'];
     
     let targetView = viewId;
-    if (targetView === 'student-home' || (targetView === 'dashboard' && window.auth && window.auth.isStudent())) {
+    if (targetView === 'guests') {
+      targetView = 'allocations';
+    } else if (targetView === 'student-home' || (targetView === 'dashboard' && window.auth && window.auth.isStudent())) {
       targetView = 'dashboard';
     }
 
@@ -155,8 +157,6 @@ class HostelHubApp {
       window.complaints.render();
     } else if (targetView === 'calendar' && window.calendar) {
       window.calendar.render();
-    } else if (targetView === 'guests' && window.guests) {
-      window.guests.render();
     }
 
     window.scrollTo(0, 0);
@@ -683,7 +683,6 @@ class HostelHubApp {
     const staticCommands = [
       { category: 'Actions', title: '+ New Booking / Reservation', subtitle: 'Book a room for a student/guest', action: () => this.openReservationModal() },
       { category: 'Navigation', title: 'Booking Calendar Matrix', subtitle: 'Gantt timeline & occupancy grid', action: () => this.navigate('calendar') },
-      { category: 'Navigation', title: 'Student CRM Directory', subtitle: 'Resident profiles & contacts', action: () => this.navigate('guests') },
       { category: 'Navigation', title: 'Overview Dashboard', subtitle: 'Building Occupancy & Metrics', action: () => this.navigate('dashboard') },
       { category: 'Navigation', title: 'Room Allocation Management', subtitle: 'Bed assignments & approval queue', action: () => this.navigate('allocations') },
       { category: 'Navigation', title: 'Hostel Fee & Payment Management', subtitle: 'Student dues & receipts', action: () => this.navigate('payments') },
@@ -711,8 +710,8 @@ class HostelHubApp {
         title: `${s.name} (${s.rollNo})`,
         subtitle: `${s.department} • Room: ${s.roomAssigned || 'Pending'}`,
         action: () => {
-          this.navigate('guests');
-          window.guests.handleSearch(s.name);
+          this.navigate('allocations');
+          window.allocations.handleSearch(s.name);
         }
       });
     });
