@@ -1,6 +1,6 @@
 /**
- * HostelHub - Data Store & Extended Dataset
- * Manages Hostel Blocks, Rooms, Students, Room Allocations, Payments, Complaints, Alerts, and LocalStorage Sync.
+ * HostelHub - Complete Data Store & Extended Dataset
+ * Manages Hostel Blocks, Rooms, Students/Guests, Bookings, Room Allocations, Payments, Complaints, Alerts, and LocalStorage Sync.
  */
 
 const HOSTEL_BLOCKS = [
@@ -11,32 +11,32 @@ const HOSTEL_BLOCKS = [
 
 const INITIAL_ROOMS = [
   // Block A (Boys Hostel - Floor 1: Dorms & Standard)
-  { id: 'A-101-A', number: 'A-101-A', block: 'BLOCK-A', floor: 1, type: '4-Bed Dorm', ac: false, capacity: 1, rate: 1200, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-001', currentGuest: 'Rohan Sharma' },
-  { id: 'A-101-B', number: 'A-101-B', block: 'BLOCK-A', floor: 1, type: '4-Bed Dorm', ac: false, capacity: 1, rate: 1200, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-002', currentGuest: 'Aditya Verma' },
-  { id: 'A-101-C', number: 'A-101-C', block: 'BLOCK-A', floor: 1, type: '4-Bed Dorm', ac: false, capacity: 1, rate: 1200, status: 'Available', condition: 'Clean', currentStudentId: null, currentGuest: null },
-  { id: 'A-101-D', number: 'A-101-D', block: 'BLOCK-A', floor: 1, type: '4-Bed Dorm', ac: false, capacity: 1, rate: 1200, status: 'Available', condition: 'Clean', currentStudentId: null, currentGuest: null },
+  { id: 'A-101-A', number: 'A-101-A', block: 'BLOCK-A', floor: 1, type: '4-Bed Dorm', bedType: 'Single Bunk', capacity: 1, rate: 1200, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-001', currentGuest: 'Rohan Sharma' },
+  { id: 'A-101-B', number: 'A-101-B', block: 'BLOCK-A', floor: 1, type: '4-Bed Dorm', bedType: 'Single Bunk', capacity: 1, rate: 1200, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-002', currentGuest: 'Aditya Verma' },
+  { id: 'A-101-C', number: 'A-101-C', block: 'BLOCK-A', floor: 1, type: '4-Bed Dorm', bedType: 'Single Bunk', capacity: 1, rate: 1200, status: 'Available', condition: 'Clean', currentStudentId: null, currentGuest: null },
+  { id: 'A-101-D', number: 'A-101-D', block: 'BLOCK-A', floor: 1, type: '4-Bed Dorm', bedType: 'Single Bunk', capacity: 1, rate: 1200, status: 'Available', condition: 'Clean', currentStudentId: null, currentGuest: null },
   
-  { id: 'A-102-A', number: 'A-102-A', block: 'BLOCK-A', floor: 1, type: '2-Bed Sharing', ac: true, capacity: 1, rate: 1800, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-003', currentGuest: 'Mateo Rossi' },
-  { id: 'A-102-B', number: 'A-102-B', block: 'BLOCK-A', floor: 1, type: '2-Bed Sharing', ac: true, capacity: 1, rate: 1800, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-004', currentGuest: 'Lucas Silva' },
+  { id: 'A-102-A', number: 'A-102-A', block: 'BLOCK-A', floor: 1, type: '2-Bed Sharing', bedType: 'Twin Single', capacity: 1, rate: 1800, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-003', currentGuest: 'Mateo Rossi' },
+  { id: 'A-102-B', number: 'A-102-B', block: 'BLOCK-A', floor: 1, type: '2-Bed Sharing', bedType: 'Twin Single', capacity: 1, rate: 1800, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-004', currentGuest: 'Lucas Silva' },
   
-  { id: 'A-201', number: 'A-201', block: 'BLOCK-A', floor: 2, type: 'Single Private (AC)', ac: true, capacity: 1, rate: 2500, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-005', currentGuest: 'Alexander Wright' },
-  { id: 'A-202', number: 'A-202', block: 'BLOCK-A', floor: 2, type: 'Single Private (AC)', ac: true, capacity: 1, rate: 2500, status: 'Available', condition: 'Clean', currentStudentId: null, currentGuest: null },
-  { id: 'A-203', number: 'A-203', block: 'BLOCK-A', floor: 2, type: '2-Bed Sharing', ac: false, capacity: 2, rate: 1500, status: 'Maintenance', condition: 'Needs Cleaning', currentStudentId: null, currentGuest: null },
-  { id: 'A-204', number: 'A-204', block: 'BLOCK-A', floor: 2, type: '2-Bed Sharing', ac: false, capacity: 2, rate: 1500, status: 'Available', condition: 'Clean', currentStudentId: null, currentGuest: null },
+  { id: 'A-201', number: 'A-201', block: 'BLOCK-A', floor: 2, type: 'Single Private (AC)', bedType: 'King Bed', capacity: 1, rate: 2500, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-005', currentGuest: 'Alexander Wright' },
+  { id: 'A-202', number: 'A-202', block: 'BLOCK-A', floor: 2, type: 'Single Private (AC)', bedType: 'King Bed', capacity: 1, rate: 2500, status: 'Available', condition: 'Clean', currentStudentId: null, currentGuest: null },
+  { id: 'A-203', number: 'A-203', block: 'BLOCK-A', floor: 2, type: '2-Bed Sharing', bedType: 'Twin Single', capacity: 2, rate: 1500, status: 'Maintenance', condition: 'Needs Cleaning', currentStudentId: null, currentGuest: null },
+  { id: 'A-204', number: 'A-204', block: 'BLOCK-A', floor: 2, type: '2-Bed Sharing', bedType: 'Twin Single', capacity: 2, rate: 1500, status: 'Available', condition: 'Clean', currentStudentId: null, currentGuest: null },
 
   // Block B (Girls Hostel - Floor 1 & 2)
-  { id: 'B-101-A', number: 'B-101-A', block: 'BLOCK-B', floor: 1, type: '3-Bed Sharing', ac: true, capacity: 1, rate: 1600, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-006', currentGuest: 'Ananya Deshmukh' },
-  { id: 'B-101-B', number: 'B-101-B', block: 'BLOCK-B', floor: 1, type: '3-Bed Sharing', ac: true, capacity: 1, rate: 1600, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-007', currentGuest: 'Sophia Chen' },
-  { id: 'B-101-C', number: 'B-101-C', block: 'BLOCK-B', floor: 1, type: '3-Bed Sharing', ac: true, capacity: 1, rate: 1600, status: 'Available', condition: 'Clean', currentStudentId: null, currentGuest: null },
+  { id: 'B-101-A', number: 'B-101-A', block: 'BLOCK-B', floor: 1, type: '3-Bed Sharing', bedType: 'Single Bed', capacity: 1, rate: 1600, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-006', currentGuest: 'Ananya Deshmukh' },
+  { id: 'B-101-B', number: 'B-101-B', block: 'BLOCK-B', floor: 1, type: '3-Bed Sharing', bedType: 'Single Bed', capacity: 1, rate: 1600, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-007', currentGuest: 'Sophia Chen' },
+  { id: 'B-101-C', number: 'B-101-C', block: 'BLOCK-B', floor: 1, type: '3-Bed Sharing', bedType: 'Single Bed', capacity: 1, rate: 1600, status: 'Available', condition: 'Clean', currentStudentId: null, currentGuest: null },
   
-  { id: 'B-201', number: 'B-201', block: 'BLOCK-B', floor: 2, type: 'Single Deluxe (AC)', ac: true, capacity: 1, rate: 2600, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-008', currentGuest: 'Elena Rostova' },
-  { id: 'B-202', number: 'B-202', block: 'BLOCK-B', floor: 2, type: 'Single Deluxe (AC)', ac: true, capacity: 1, rate: 2600, status: 'Available', condition: 'Clean', currentStudentId: null, currentGuest: null },
-  { id: 'B-203', number: 'B-203', block: 'BLOCK-B', floor: 2, type: '2-Bed Sharing', ac: false, capacity: 2, rate: 1400, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-009', currentGuest: 'Amara Diop' },
-  { id: 'B-204', number: 'B-204', block: 'BLOCK-B', floor: 2, type: '2-Bed Sharing', ac: false, capacity: 2, rate: 1400, status: 'Maintenance', condition: 'In Progress', currentStudentId: null, currentGuest: null },
+  { id: 'B-201', number: 'B-201', block: 'BLOCK-B', floor: 2, type: 'Single Deluxe (AC)', bedType: 'Queen Bed', capacity: 1, rate: 2600, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-008', currentGuest: 'Elena Rostova' },
+  { id: 'B-202', number: 'B-202', block: 'BLOCK-B', floor: 2, type: 'Single Deluxe (AC)', bedType: 'Queen Bed', capacity: 1, rate: 2600, status: 'Available', condition: 'Clean', currentStudentId: null, currentGuest: null },
+  { id: 'B-203', number: 'B-203', block: 'BLOCK-B', floor: 2, type: '2-Bed Sharing', bedType: 'Twin Single', capacity: 2, rate: 1400, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-009', currentGuest: 'Amara Diop' },
+  { id: 'B-204', number: 'B-204', block: 'BLOCK-B', floor: 2, type: '2-Bed Sharing', bedType: 'Twin Single', capacity: 2, rate: 1400, status: 'Maintenance', condition: 'In Progress', currentStudentId: null, currentGuest: null },
 
   // Block C (PG & International)
-  { id: 'C-301', number: 'C-301', block: 'BLOCK-C', floor: 3, type: 'Studio Suite (AC + Kitchenette)', ac: true, capacity: 2, rate: 3500, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-010', currentGuest: 'Julian Vance' },
-  { id: 'C-302', number: 'C-302', block: 'BLOCK-C', floor: 3, type: 'Studio Suite (AC + Kitchenette)', ac: true, capacity: 2, rate: 3500, status: 'Available', condition: 'Clean', currentStudentId: null, currentGuest: null }
+  { id: 'C-301', number: 'C-301', block: 'BLOCK-C', floor: 3, type: 'Studio Suite (AC + Kitchenette)', bedType: 'King Suite', capacity: 2, rate: 3500, status: 'Occupied', condition: 'Clean', currentStudentId: 'STU-2024-010', currentGuest: 'Julian Vance' },
+  { id: 'C-302', number: 'C-302', block: 'BLOCK-C', floor: 3, type: 'Studio Suite (AC + Kitchenette)', bedType: 'King Suite', capacity: 2, rate: 3500, status: 'Available', condition: 'Clean', currentStudentId: null, currentGuest: null }
 ];
 
 const INITIAL_STUDENTS = [
@@ -50,6 +50,10 @@ const INITIAL_STUDENTS = [
     department: 'Computer Science & Engineering',
     year: '3rd Year (Semester 5)',
     gender: 'Male',
+    loyaltyTier: 'Gold',
+    loyaltyPoints: 1420,
+    currentStatus: 'In-House',
+    totalStays: 4,
     avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80',
     hostelBlock: 'Block A (Boys Hostel)',
     roomAssigned: 'A-101-A',
@@ -62,7 +66,8 @@ const INITIAL_STUDENTS = [
     feeStatus: 'Paid',
     totalFees: 12000,
     paidFees: 12000,
-    pendingFees: 0
+    pendingFees: 0,
+    notes: 'Merit scholar. Top floor study access required.'
   },
   {
     id: 'STU-2024-006',
@@ -74,6 +79,10 @@ const INITIAL_STUDENTS = [
     department: 'Information Technology',
     year: '2nd Year (Semester 3)',
     gender: 'Female',
+    loyaltyTier: 'Platinum',
+    loyaltyPoints: 2850,
+    currentStatus: 'In-House',
+    totalStays: 6,
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
     hostelBlock: 'Block B (Girls Hostel)',
     roomAssigned: 'B-101-A',
@@ -86,7 +95,8 @@ const INITIAL_STUDENTS = [
     feeStatus: 'Partial',
     totalFees: 15000,
     paidFees: 10000,
-    pendingFees: 5000
+    pendingFees: 5000,
+    notes: 'Resident Representative for Block B.'
   },
   {
     id: 'STU-2024-005',
@@ -98,6 +108,10 @@ const INITIAL_STUDENTS = [
     department: 'Mechanical Engineering',
     year: '4th Year (Semester 7)',
     gender: 'Male',
+    loyaltyTier: 'Silver',
+    loyaltyPoints: 890,
+    currentStatus: 'In-House',
+    totalStays: 2,
     avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
     hostelBlock: 'Block A (Boys Hostel)',
     roomAssigned: 'A-201',
@@ -110,7 +124,8 @@ const INITIAL_STUDENTS = [
     feeStatus: 'Paid',
     totalFees: 20000,
     paidFees: 20000,
-    pendingFees: 0
+    pendingFees: 0,
+    notes: 'Exchange scholar from UK.'
   },
   {
     id: 'STU-2024-007',
@@ -122,6 +137,10 @@ const INITIAL_STUDENTS = [
     department: 'Artificial Intelligence & Data Science',
     year: '3rd Year (Semester 5)',
     gender: 'Female',
+    loyaltyTier: 'Gold',
+    loyaltyPoints: 1650,
+    currentStatus: 'In-House',
+    totalStays: 3,
     avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
     hostelBlock: 'Block B (Girls Hostel)',
     roomAssigned: 'B-101-B',
@@ -134,7 +153,190 @@ const INITIAL_STUDENTS = [
     feeStatus: 'Overdue',
     totalFees: 16000,
     paidFees: 0,
-    pendingFees: 16000
+    pendingFees: 16000,
+    notes: 'Robotics lab project resident.'
+  },
+  {
+    id: 'STU-2024-003',
+    name: 'Mateo Rossi',
+    rollNo: '2024-CIVIL-012',
+    email: 'mateo.rossi@italia.it',
+    password: 'password123',
+    phone: '+39 02 8765 4321',
+    department: 'Civil & Architectural Engineering',
+    year: '2nd Year (Semester 3)',
+    gender: 'Male',
+    loyaltyTier: 'Silver',
+    loyaltyPoints: 600,
+    currentStatus: 'In-House',
+    totalStays: 1,
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+    hostelBlock: 'Block A (Boys Hostel)',
+    roomAssigned: 'A-102-A',
+    bedNumber: 'Bed A',
+    allocationDate: '2026-07-20',
+    guardianName: 'Marco Rossi',
+    guardianPhone: '+39 02 8765 0000',
+    emergencyContact: '+39 02 8765 4321',
+    address: 'Milan, Italy',
+    feeStatus: 'Paid',
+    totalFees: 14000,
+    paidFees: 14000,
+    pendingFees: 0,
+    notes: 'Design team lead.'
+  }
+];
+
+const INITIAL_BOOKINGS = [
+  {
+    id: 'BKG-7001',
+    guestName: 'Rohan Sharma',
+    guestEmail: 'rohan.sharma@college.edu',
+    roomId: 'A-101-A',
+    roomNumber: 'A-101-A',
+    startDate: '2026-08-20',
+    endDate: '2026-09-05',
+    status: 'Checked-In',
+    pax: 1,
+    totalAmount: 1200,
+    paymentStatus: 'Paid',
+    channel: 'Direct Campus Allotment',
+    color: 'teal'
+  },
+  {
+    id: 'BKG-7002',
+    guestName: 'Aditya Verma',
+    guestEmail: 'aditya.verma@college.edu',
+    roomId: 'A-101-B',
+    roomNumber: 'A-101-B',
+    startDate: '2026-08-22',
+    endDate: '2026-09-02',
+    status: 'Checked-In',
+    pax: 1,
+    totalAmount: 1200,
+    paymentStatus: 'Paid',
+    channel: 'Direct Allotment',
+    color: 'indigo'
+  },
+  {
+    id: 'BKG-7003',
+    guestName: 'Mateo Rossi',
+    guestEmail: 'mateo.rossi@italia.it',
+    roomId: 'A-102-A',
+    roomNumber: 'A-102-A',
+    startDate: '2026-08-24',
+    endDate: '2026-08-31',
+    status: 'Confirmed',
+    pax: 1,
+    totalAmount: 1800,
+    paymentStatus: 'Paid',
+    channel: 'Campus Portal',
+    color: 'teal'
+  },
+  {
+    id: 'BKG-7004',
+    guestName: 'Lucas Silva',
+    guestEmail: 'lucas.silva@rio.br',
+    roomId: 'A-102-B',
+    roomNumber: 'A-102-B',
+    startDate: '2026-08-25',
+    endDate: '2026-09-04',
+    status: 'Checked-In',
+    pax: 1,
+    totalAmount: 1800,
+    paymentStatus: 'Paid',
+    channel: 'Campus Portal',
+    color: 'emerald'
+  },
+  {
+    id: 'BKG-7005',
+    guestName: 'Alexander Wright',
+    guestEmail: 'alex.wright@wanderlust.io',
+    roomId: 'A-201',
+    roomNumber: 'A-201',
+    startDate: '2026-08-24',
+    endDate: '2026-09-06',
+    status: 'Checked-In',
+    pax: 1,
+    totalAmount: 2500,
+    paymentStatus: 'Paid',
+    channel: 'International Portal',
+    color: 'purple'
+  },
+  {
+    id: 'BKG-7006',
+    guestName: 'Ananya Deshmukh',
+    guestEmail: 'ananya.deshmukh@college.edu',
+    roomId: 'B-101-A',
+    roomNumber: 'B-101-A',
+    startDate: '2026-08-20',
+    endDate: '2026-09-08',
+    status: 'Checked-In',
+    pax: 1,
+    totalAmount: 1600,
+    paymentStatus: 'Paid',
+    channel: 'Direct Allotment',
+    color: 'teal'
+  },
+  {
+    id: 'BKG-7007',
+    guestName: 'Sophia Chen',
+    guestEmail: 'sophia.chen@techglobal.com',
+    roomId: 'B-101-B',
+    roomNumber: 'B-101-B',
+    startDate: '2026-08-22',
+    endDate: '2026-09-03',
+    status: 'Confirmed',
+    pax: 1,
+    totalAmount: 1600,
+    paymentStatus: 'Pending',
+    channel: 'Academic Exchange',
+    color: 'amber'
+  },
+  {
+    id: 'BKG-7008',
+    guestName: 'Elena Rostova',
+    guestEmail: 'elena.rostova@travel.ru',
+    roomId: 'B-201',
+    roomNumber: 'B-201',
+    startDate: '2026-08-25',
+    endDate: '2026-09-01',
+    status: 'Checked-In',
+    pax: 1,
+    totalAmount: 2600,
+    paymentStatus: 'Paid',
+    channel: 'Direct Booking',
+    color: 'indigo'
+  },
+  {
+    id: 'BKG-7009',
+    guestName: 'Amara Diop',
+    guestEmail: 'amara.diop@dakar.sn',
+    roomId: 'B-203',
+    roomNumber: 'B-203',
+    startDate: '2026-08-24',
+    endDate: '2026-08-30',
+    status: 'Checked-In',
+    pax: 1,
+    totalAmount: 1400,
+    paymentStatus: 'Paid',
+    channel: 'Campus Portal',
+    color: 'teal'
+  },
+  {
+    id: 'BKG-7010',
+    guestName: 'Julian Vance',
+    guestEmail: 'julian.vance@oxford.ac.uk',
+    roomId: 'C-301',
+    roomNumber: 'C-301',
+    startDate: '2026-08-21',
+    endDate: '2026-09-07',
+    status: 'Checked-In',
+    pax: 2,
+    totalAmount: 3500,
+    paymentStatus: 'Paid',
+    channel: 'Research Fellow Allotment',
+    color: 'purple'
   }
 ];
 
@@ -324,6 +526,12 @@ const INITIAL_COMPLAINTS = [
   }
 ];
 
+const INITIAL_ALERTS = [
+  { id: 'ALT-1', type: 'Maintenance', title: 'AC Water Leak reported', unit: 'Unit A-203', time: '10m ago', resolved: false },
+  { id: 'ALT-2', type: 'Housekeeping', title: 'Deep Sanitization pending', unit: 'Unit B-204', time: '25m ago', resolved: false },
+  { id: 'ALT-3', type: 'Plumbing', title: 'Water Pressure fluctuation', unit: 'Block A Floor 2', time: '1h ago', resolved: false }
+];
+
 const MESS_MENU = {
   today: 'Wednesday',
   breakfast: 'Poha, Boiled Eggs / Banana, Masala Tea, Coffee',
@@ -348,7 +556,7 @@ class HostelDataStore {
   }
 
   initStore() {
-    if (!localStorage.getItem(this.storageKeyPrefix + 'students')) {
+    if (!localStorage.getItem(this.storageKeyPrefix + 'students') || !localStorage.getItem(this.storageKeyPrefix + 'bookings')) {
       this.resetToDefaults();
     }
   }
@@ -357,9 +565,11 @@ class HostelDataStore {
     localStorage.setItem(this.storageKeyPrefix + 'blocks', JSON.stringify(HOSTEL_BLOCKS));
     localStorage.setItem(this.storageKeyPrefix + 'rooms', JSON.stringify(INITIAL_ROOMS));
     localStorage.setItem(this.storageKeyPrefix + 'students', JSON.stringify(INITIAL_STUDENTS));
+    localStorage.setItem(this.storageKeyPrefix + 'bookings', JSON.stringify(INITIAL_BOOKINGS));
     localStorage.setItem(this.storageKeyPrefix + 'allocations', JSON.stringify(INITIAL_ALLOCATIONS));
     localStorage.setItem(this.storageKeyPrefix + 'payments', JSON.stringify(INITIAL_PAYMENTS));
     localStorage.setItem(this.storageKeyPrefix + 'complaints', JSON.stringify(INITIAL_COMPLAINTS));
+    localStorage.setItem(this.storageKeyPrefix + 'alerts', JSON.stringify(INITIAL_ALERTS));
     localStorage.setItem(this.storageKeyPrefix + 'mess_menu', JSON.stringify(MESS_MENU));
     localStorage.setItem(this.storageKeyPrefix + 'notices', JSON.stringify(NOTICE_BOARD));
   }
@@ -371,7 +581,7 @@ class HostelDataStore {
 
   // --- Rooms ---
   getRooms() {
-    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'rooms') || '[]');
+    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'rooms') || JSON.stringify(INITIAL_ROOMS));
   }
 
   saveRooms(rooms) {
@@ -406,9 +616,9 @@ class HostelDataStore {
     this.saveRooms(rooms);
   }
 
-  // --- Students ---
+  // --- Students / Guests CRM ---
   getStudents() {
-    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'students') || '[]');
+    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'students') || JSON.stringify(INITIAL_STUDENTS));
   }
 
   saveStudents(students) {
@@ -426,9 +636,42 @@ class HostelDataStore {
     return student;
   }
 
+  // Alias for CRM directory compatibility
+  getGuests() {
+    return this.getStudents();
+  }
+
+  saveGuests(guests) {
+    this.saveStudents(guests);
+  }
+
+  getGuestById(id) {
+    return this.getStudentById(id);
+  }
+
+  addGuest(guest) {
+    return this.addStudent(guest);
+  }
+
+  // --- Bookings & Calendar ---
+  getBookings() {
+    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'bookings') || JSON.stringify(INITIAL_BOOKINGS));
+  }
+
+  saveBookings(bookings) {
+    localStorage.setItem(this.storageKeyPrefix + 'bookings', JSON.stringify(bookings));
+  }
+
+  addBooking(booking) {
+    const bookings = this.getBookings();
+    bookings.unshift(booking);
+    this.saveBookings(bookings);
+    return booking;
+  }
+
   // --- Room Allocations ---
   getAllocations() {
-    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'allocations') || '[]');
+    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'allocations') || JSON.stringify(INITIAL_ALLOCATIONS));
   }
 
   saveAllocations(allocations) {
@@ -477,7 +720,7 @@ class HostelDataStore {
 
   // --- Payments & Fees ---
   getPayments() {
-    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'payments') || '[]');
+    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'payments') || JSON.stringify(INITIAL_PAYMENTS));
   }
 
   savePayments(payments) {
@@ -503,7 +746,7 @@ class HostelDataStore {
 
   // --- Complaints ---
   getComplaints() {
-    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'complaints') || '[]');
+    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'complaints') || JSON.stringify(INITIAL_COMPLAINTS));
   }
 
   saveComplaints(complaints) {
@@ -540,7 +783,7 @@ class HostelDataStore {
 
   // --- Alerts (Operational) ---
   getAlerts() {
-    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'alerts') || '[]');
+    return JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'alerts') || JSON.stringify(INITIAL_ALERTS));
   }
 
   saveAlerts(alerts) {
