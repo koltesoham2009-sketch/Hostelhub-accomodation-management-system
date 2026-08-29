@@ -17,7 +17,10 @@ class HostelHubApp {
     this.initEventListeners();
   }
 
-  init() {
+  async init() {
+    if (window.auth && window.auth.initialize) {
+      await window.auth.initialize();
+    }
     if (window.auth) {
       window.auth.updateAppForRole();
     }
