@@ -857,6 +857,9 @@ class HostelHubApp {
 
 // Instantiate global app
 window.app = new HostelHubApp();
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  if (window.auth && window.auth.initialize) {
+    await window.auth.initialize();
+  }
   window.app.init();
 });
