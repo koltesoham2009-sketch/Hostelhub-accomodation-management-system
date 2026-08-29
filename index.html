@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HostelHub - Accommodation Management System</title>
+  <title>HostelHub - Student Accommodation & Property Management System</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -36,7 +36,7 @@
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col md:flex-row">
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 antialiased min-h-screen flex flex-col md:flex-row">
 
   <!-- ================= PERSISTENT SIDEBAR ================= -->
   <aside class="w-full md:w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0 md:min-h-screen border-r border-slate-800 select-none z-30">
@@ -45,102 +45,93 @@
     <div class="p-5 border-b border-slate-800 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-400 border border-teal-500/30 flex items-center justify-center font-black text-xl shadow-inner">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-          </svg>
+          🎓
         </div>
         <div>
           <div class="font-extrabold text-white text-base tracking-tight flex items-center gap-1.5">
             HostelHub
-            <span class="text-[10px] font-bold uppercase bg-teal-500/20 text-teal-300 px-1.5 py-0.2 rounded border border-teal-500/30">PMS</span>
+            <span class="text-[10px] font-bold uppercase bg-teal-500/20 text-teal-300 px-1.5 py-0.2 rounded border border-teal-500/30">CAMPUS</span>
           </div>
-          <span class="text-[11px] text-slate-400 font-medium">Downtown Hostel</span>
+          <span class="text-[11px] text-slate-400 font-medium">Student Accommodation</span>
         </div>
       </div>
     </div>
 
-    <!-- Quick New Reservation CTA Button in Sidebar -->
-    <div class="px-4 py-4">
+    <!-- Quick Action / Login CTA in Sidebar -->
+    <div class="px-4 py-3">
       <button 
-        onclick="window.app.openReservationModal()"
-        class="w-full py-2.5 px-4 bg-teal-500 hover:bg-teal-400 active:bg-teal-600 text-slate-950 font-bold text-xs rounded-lg shadow-sm flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
-        </svg>
-        New Reservation
+        onclick="window.auth.openAuthModal('switch')"
+        class="w-full py-2 px-3 bg-teal-600 hover:bg-teal-500 active:bg-teal-700 text-white font-bold text-xs rounded-lg shadow-sm flex items-center justify-center gap-2 transition-all">
+        <span>⇄</span>
+        <span>Switch Portal / Role</span>
       </button>
     </div>
 
     <!-- Navigation Menu Items -->
-    <nav class="flex-1 px-3 space-y-1.5 overflow-y-auto">
+    <nav class="flex-1 px-3 space-y-1 overflow-y-auto">
       
-      <a href="#dashboard" onclick="window.app.navigate('dashboard')" data-view="dashboard" class="nav-item active flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-slate-300">
+      <!-- Core Links -->
+      <a href="#dashboard" onclick="window.app.navigate('dashboard')" data-view="dashboard" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-slate-300">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
         </svg>
-        Overview
+        Overview Dashboard
       </a>
 
-      <a href="#rooms" onclick="window.app.navigate('rooms')" data-view="rooms" class="nav-item flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-slate-300">
+      <a href="#allocations" onclick="window.app.navigate('allocations')" data-view="allocations" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-slate-300">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+        </svg>
+        Room Allocations
+      </a>
+
+      <a href="#payments" onclick="window.app.navigate('payments')" data-view="payments" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-slate-300">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+        </svg>
+        Fee & Payments
+      </a>
+
+      <a href="#complaints" onclick="window.app.navigate('complaints')" data-view="complaints" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-slate-300">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+        </svg>
+        Complaint Helpdesk
+      </a>
+
+      <a href="#rooms" onclick="window.app.navigate('rooms')" data-view="rooms" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-slate-300">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
         </svg>
-        Room Management
+        Hostel & Rooms
       </a>
 
-      <a href="#calendar" onclick="window.app.navigate('calendar')" data-view="calendar" class="nav-item flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-slate-300">
+      <!-- Admin Specific Links -->
+      <div class="pt-3 pb-1 nav-admin-only">
+        <span class="px-3.5 text-[10px] font-bold uppercase tracking-wider text-slate-500">Administration</span>
+      </div>
+
+      <a href="#calendar" onclick="window.app.navigate('calendar')" data-view="calendar" class="nav-link nav-admin-only flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-slate-300">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
         </svg>
         Booking Calendar
       </a>
 
-      <a href="#guests" onclick="window.app.navigate('guests')" data-view="guests" class="nav-item flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-slate-300">
+      <a href="#guests" onclick="window.app.navigate('guests')" data-view="guests" class="nav-link nav-admin-only flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-slate-300">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
         </svg>
-        Guest Directory
-      </a>
-
-      <div class="pt-3 pb-1">
-        <span class="px-3.5 text-[10px] font-bold uppercase tracking-wider text-slate-500">Management</span>
-      </div>
-
-      <a href="#analytics" onclick="window.app.navigate('analytics')" data-view="analytics" class="nav-item flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-slate-300">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-        </svg>
-        Analytics & Reports
-      </a>
-
-      <a href="#settings" onclick="window.app.navigate('settings')" data-view="settings" class="nav-item flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-slate-300">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-        </svg>
-        Settings
+        Student CRM Directory
       </a>
 
     </nav>
 
     <!-- Bottom User Profile Card -->
     <div class="p-3 border-t border-slate-800 bg-slate-950/50">
-      <div class="p-2.5 rounded-lg bg-slate-800/60 border border-slate-700/50 flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <div class="relative">
-            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" alt="Jane Doe" class="w-8 h-8 rounded-full object-cover border border-teal-500/50" />
-            <span class="w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-slate-900 absolute -bottom-0.5 -right-0.5"></span>
-          </div>
-          <div>
-            <div class="text-xs font-bold text-white">Jane Doe</div>
-            <div class="text-[10px] text-slate-400 font-medium">Front Desk Lead</div>
-          </div>
-        </div>
-        <button onclick="window.app.resetAllDemoData()" class="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-700 rounded transition-colors" title="Reset Demo Data">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-          </svg>
-        </button>
+      <div id="sidebar-user-widget" class="p-2.5 rounded-lg bg-slate-800/60 border border-slate-700/50 flex items-center justify-between">
+        <!-- Injected dynamically by window.auth.updateAppForRole() -->
       </div>
     </div>
 
@@ -150,7 +141,7 @@
   <main class="flex-1 flex flex-col min-w-0 overflow-x-hidden">
     
     <!-- Top Utility Header -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-20 px-6 py-3 flex items-center justify-between shadow-xs">
+    <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-20 px-6 py-3 flex items-center justify-between shadow-xs">
       
       <!-- Global Quick Search Bar with Command Palette shortcut -->
       <div class="relative max-w-md w-full hidden sm:block cursor-pointer" onclick="window.app.openCommandPalette()">
@@ -160,8 +151,8 @@
         <input 
           type="text" 
           readonly
-          placeholder="Global spotlight search... (Press Ctrl+K or /)" 
-          class="w-full pl-9 pr-14 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 cursor-pointer"
+          placeholder="Spotlight search... (Press Ctrl+K or /)" 
+          class="w-full pl-9 pr-14 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none cursor-pointer"
         />
         <span class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-mono font-bold text-slate-400 bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded">
           Ctrl+K
@@ -171,73 +162,59 @@
       <!-- Header Action Items -->
       <div class="flex items-center gap-3 ml-auto relative">
         
+        <!-- Role Indicator Badge -->
+        <div id="header-role-badge" class="flex items-center gap-2 px-3 py-1 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs">
+          <!-- Dynamically populated -->
+        </div>
+
         <!-- Theme Mode Toggle (Light/Dark) -->
         <button 
           id="theme-toggle-btn"
-          onclick="window.app.toggleTheme()" 
+          onclick="window.app.toggleDarkMode()" 
           class="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" 
           title="Toggle Dark / Light Mode">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-          </svg>
-        </button>
-
-        <!-- Quick Walk-In Button -->
-        <button onclick="window.app.openWalkInModal()" class="px-3 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-700 font-bold text-xs rounded-lg border border-teal-200 transition-colors flex items-center gap-1.5 shadow-xs">
-          <span class="text-xs">⚡</span>
-          Walk-In
+          🌓
         </button>
 
         <!-- Notification Bell with Interactive Dropdown Container -->
-        <div class="relative">
+        <div id="notification-center-container" class="relative">
           <button 
             id="btn-notifications"
             onclick="window.app.toggleNotificationsDropdown(event)" 
-            class="relative p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-teal-500/20 active:scale-95" 
+            class="relative p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all focus:outline-none" 
             title="Urgent Alerts & Operations">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
             </svg>
-            <!-- Dynamic Count Badge -->
-            <span id="bell-badge" class="absolute -top-1 -right-1 px-1.5 py-0.2 min-w-[18px] text-[10px] font-black text-white bg-rose-500 rounded-full flex items-center justify-center shadow-sm animate-bounce">
-              3
-            </span>
+            <!-- Dynamic Red Dot Badge -->
+            <span id="bell-badge" class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-rose-500 rounded-full animate-ping"></span>
           </button>
 
           <!-- Interactive Notifications Popover Dropdown -->
           <div id="notification-dropdown" class="notification-dropdown hidden">
-            <!-- Dropdown Header -->
             <div class="p-3.5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/80 dark:bg-slate-900/80 rounded-t-xl">
               <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
-                <span class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">Alerts Center</span>
-                <span id="notif-count-badge" class="text-[10px] font-bold bg-rose-100 text-rose-700 px-2 py-0.5 rounded-full">3 Pending</span>
+                <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                <span class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">Alerts & Grievances</span>
+                <span id="notif-count-badge" class="text-[10px] font-bold bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300 px-2 py-0.5 rounded-full">3 Pending</span>
               </div>
-              <button onclick="window.app.resolveAllAlerts()" class="text-[11px] font-semibold text-teal-600 hover:text-teal-700 dark:text-teal-400 transition-colors">
+              <button onclick="window.app.resolveAllNotifications()" class="text-[11px] font-semibold text-teal-600 hover:text-teal-700 dark:text-teal-400">
                 Resolve All
               </button>
             </div>
 
-            <!-- Notification Items Scroll List -->
-            <div id="notif-items-container" class="max-h-[320px] overflow-y-auto divide-y divide-slate-50 dark:divide-slate-800">
-              <!-- Populated dynamically via renderNotificationsList() -->
-            </div>
+            <!-- Items List -->
+            <div id="notif-items-list" class="max-h-[320px] overflow-y-auto divide-y divide-slate-50 dark:divide-slate-800"></div>
 
-            <!-- Dropdown Footer -->
             <div class="p-2.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 rounded-b-xl flex items-center justify-between text-[11px]">
-              <span class="text-slate-400 font-medium">Real-time PMS Dispatch</span>
-              <button onclick="window.app.closeNotificationsDropdown(); window.app.navigate('dashboard')" class="font-bold text-teal-600 dark:text-teal-400 hover:underline">
-                Open Mission Control →
+              <span class="text-slate-400 font-medium">Real-time Campus Dispatch</span>
+              <button onclick="window.app.closeNotificationsDropdown(); window.app.navigate('complaints')" class="font-bold text-teal-600 hover:underline">
+                View Grievances →
               </button>
             </div>
           </div>
         </div>
 
-        <!-- Property Shift Badge -->
-        <div class="hidden md:flex items-center gap-2 pl-3 border-l border-slate-200 text-xs">
-          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-          <span class="font-bold text-slate-700 dark:text-slate-300">Front Desk: Online</span>
-        </div>
       </div>
 
     </header>
@@ -245,21 +222,22 @@
     <!-- Main View Dynamic Container -->
     <div class="p-6 md:p-8 flex-1 max-w-7xl w-full mx-auto">
       <div id="view-dashboard" class="view-panel"></div>
+      <div id="view-allocations" class="view-panel hidden"></div>
+      <div id="view-payments" class="view-panel hidden"></div>
+      <div id="view-complaints" class="view-panel hidden"></div>
       <div id="view-rooms" class="view-panel hidden"></div>
       <div id="view-calendar" class="view-panel hidden"></div>
       <div id="view-guests" class="view-panel hidden"></div>
-      <div id="view-analytics" class="view-panel hidden"></div>
       <div id="view-settings" class="view-panel hidden"></div>
     </div>
 
   </main>
 
   <!-- ================= COMMAND PALETTE MODAL (Ctrl+K) ================= -->
-  <div id="command-palette-modal" class="modal-wrapper modal-hidden fixed inset-0 z-50 flex items-start justify-center pt-20 p-4">
-    <div class="command-palette-backdrop absolute inset-0" onclick="window.app.closeCommandPalette()"></div>
-    <div class="command-palette-box relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-lg overflow-hidden z-10">
+  <div id="command-palette-modal" class="modal-wrapper hidden fixed inset-0 z-50 flex items-start justify-center pt-20 p-4">
+    <div class="modal-backdrop absolute inset-0" onclick="window.app.closeCommandPalette()"></div>
+    <div class="relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-lg overflow-hidden z-10">
       
-      <!-- Search Input -->
       <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3">
         <svg class="w-5 h-5 text-teal-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -267,84 +245,66 @@
         <input 
           type="text" 
           id="command-palette-input" 
-          placeholder="Search commands, navigate views, find rooms or guests..." 
-          oninput="window.app.handleCommandSearch(this.value)"
+          placeholder="Type a command, navigate, or find rooms..." 
+          oninput="window.app.searchCommands(this.value)"
           class="w-full bg-transparent border-none text-sm font-semibold text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none" 
         />
         <span class="text-[10px] font-mono text-slate-400 border border-slate-200 dark:border-slate-700 px-1.5 py-0.5 rounded">
-          ESC to close
+          ESC
         </span>
       </div>
 
-      <!-- Results Container -->
-      <div id="command-palette-results" class="max-h-[320px] overflow-y-auto py-2"></div>
-
-      <!-- Footer Help -->
-      <div class="px-4 py-2 bg-slate-50 dark:bg-slate-950 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
-        <div class="flex items-center gap-3">
-          <span><kbd class="font-mono bg-slate-200 dark:bg-slate-800 px-1 rounded">↑</kbd> <kbd class="font-mono bg-slate-200 dark:bg-slate-800 px-1 rounded">↓</kbd> to navigate</span>
-          <span><kbd class="font-mono bg-slate-200 dark:bg-slate-800 px-1 rounded">↵</kbd> to select</span>
-        </div>
-        <span>HostelHub Command Matrix</span>
-      </div>
+      <div id="command-results-list" class="max-h-[320px] overflow-y-auto p-2"></div>
     </div>
   </div>
 
-  <!-- ================= MODALS & DRAWERS ================= -->
+  <!-- ================= MODALS ================= -->
 
-  <!-- New Reservation Modal -->
-  <div id="modal-reservation" class="modal-wrapper modal-hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div class="modal-backdrop absolute inset-0" onclick="window.app.closeModal('modal-reservation')"></div>
-    <div id="reservation-modal-content" class="modal-content-container relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-xl overflow-hidden z-10 max-h-[90vh] overflow-y-auto"></div>
+  <!-- Auth Modal (Login / Register / Role Switch) -->
+  <div id="modal-auth" class="modal-wrapper hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop absolute inset-0" onclick="window.app.closeModal('modal-auth')"></div>
+    <div id="auth-modal-content" class="relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-lg overflow-hidden z-10"></div>
   </div>
 
-  <!-- Walk-In Quick Check-In Modal -->
-  <div id="modal-walkin" class="modal-wrapper modal-hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div class="modal-backdrop absolute inset-0" onclick="window.app.closeModal('modal-walkin')"></div>
-    <div id="walkin-modal-content" class="modal-content-container relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-md overflow-hidden z-10"></div>
+  <!-- Room Allotment Modal -->
+  <div id="modal-allotment" class="modal-wrapper hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop absolute inset-0" onclick="window.app.closeModal('modal-allotment')"></div>
+    <div id="allotment-modal-content" class="relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-lg overflow-hidden z-10 max-h-[90vh] overflow-y-auto"></div>
   </div>
 
-  <!-- Maintenance Service Modal -->
-  <div id="modal-maintenance" class="modal-wrapper modal-hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div class="modal-backdrop absolute inset-0" onclick="window.app.closeModal('modal-maintenance')"></div>
-    <div id="maintenance-modal-content" class="modal-content-container relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-md overflow-hidden z-10"></div>
+  <!-- Payment Checkout & Receipt Modal -->
+  <div id="modal-payment" class="modal-wrapper hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop absolute inset-0" onclick="window.app.closeModal('modal-payment')"></div>
+    <div id="payment-modal-content" class="relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-lg overflow-hidden z-10 max-h-[90vh] overflow-y-auto"></div>
   </div>
 
-  <!-- Quick Invoice Modal -->
-  <div id="modal-invoice" class="modal-wrapper modal-hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div class="modal-backdrop absolute inset-0" onclick="window.app.closeModal('modal-invoice')"></div>
-    <div id="invoice-modal-content" class="modal-content-container relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-2xl overflow-hidden z-10 max-h-[90vh] overflow-y-auto"></div>
-  </div>
-
-  <!-- Booking Details Inspection Modal -->
-  <div id="modal-booking-details" class="modal-wrapper modal-hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div class="modal-backdrop absolute inset-0" onclick="window.app.closeModal('modal-booking-details')"></div>
-    <div id="booking-details-modal-content" class="modal-content-container relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-md overflow-hidden z-10"></div>
+  <!-- Complaint Modal -->
+  <div id="modal-complaint" class="modal-wrapper hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop absolute inset-0" onclick="window.app.closeModal('modal-complaint')"></div>
+    <div id="complaint-modal-content" class="relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-lg overflow-hidden z-10 max-h-[90vh] overflow-y-auto"></div>
   </div>
 
   <!-- Room Add/Edit Modal -->
-  <div id="modal-room" class="modal-wrapper modal-hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div id="modal-room" class="modal-wrapper hidden fixed inset-0 z-50 flex items-center justify-center p-4">
     <div class="modal-backdrop absolute inset-0" onclick="window.app.closeModal('modal-room')"></div>
-    <div id="room-modal-content" class="modal-content-container relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-md overflow-hidden z-10"></div>
-  </div>
-
-  <!-- Add Guest Modal -->
-  <div id="modal-addguest" class="modal-wrapper modal-hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div class="modal-backdrop absolute inset-0" onclick="window.app.closeModal('modal-addguest')"></div>
-    <div id="addguest-modal-content" class="modal-content-container relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-md overflow-hidden z-10"></div>
+    <div id="room-modal-content" class="relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-md overflow-hidden z-10"></div>
   </div>
 
   <!-- Guest Profile Slide-Over Drawer -->
-  <div id="guest-profile-drawer" class="fixed inset-0 z-50 drawer-hidden flex justify-end">
-    <div class="drawer-backdrop absolute inset-0" onclick="window.app.closeGuestProfileDrawer()"></div>
-    <div id="guest-drawer-content" class="drawer-panel relative bg-white dark:bg-slate-900 w-full max-w-md h-full shadow-2xl border-l border-slate-200 dark:border-slate-800 flex flex-col z-10"></div>
+  <div id="guest-profile-drawer" class="fixed inset-0 z-50 hidden flex justify-end">
+    <div class="modal-backdrop absolute inset-0" onclick="window.guests.closeDrawer()"></div>
+    <div id="guest-drawer-content" class="relative bg-white dark:bg-slate-900 w-full max-w-md h-full shadow-2xl border-l border-slate-200 dark:border-slate-800 flex flex-col z-10 overflow-y-auto"></div>
   </div>
 
   <!-- Global Toast Notification Container -->
-  <div id="toast-container"></div>
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
 
   <!-- ================= SCRIPTS ================= -->
   <script src="js/data.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/allocations.js"></script>
+  <script src="js/payments.js"></script>
+  <script src="js/complaints.js"></script>
   <script src="js/dashboard.js"></script>
   <script src="js/rooms.js"></script>
   <script src="js/calendar.js"></script>
