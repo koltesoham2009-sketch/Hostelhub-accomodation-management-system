@@ -169,33 +169,44 @@ class AuthModule {
   }
 
   async registerStudent(studentData) {
-    if (!studentData.name || !studentData.email || !studentData.password) {
+
+    if (
+      !studentData.name ||
+      !studentData.email ||
+      !studentData.password ||
+      !studentData.rollNo
+    ) {
       window.app.showToast("Please fill all required fields", "error");
       return false;
     }
 
     if (studentData.password.length < 6) {
-      window.app.showToast("Password must contain at least 6 characters", "error");
+      window.app.showToast(
+        "Password must contain at least 6 characters",
+        "error"
+      );
       return false;
     }
 
     try {
-      const { data, error } = await window.supabaseClient.auth.signUp({
-        email: studentData.email,
-        password: studentData.password,
-        options: {
-          data: {
-            full_name: studentData.name,
-            roll_no: studentData.rollNo,
-            department: studentData.department,
-            year: studentData.year,
-            gender: studentData.gender,
-            phone: studentData.phone,
-            guardian_name: studentData.guardianName || "",
-            guardian_phone: studentData.guardianPhone || ""
+
+      const { data, error } =
+        await window.supabaseClient.auth.signUp({
+          email: studentData.email,
+          password: studentData.password,
+          options: {
+            data: {
+              full_name: studentData.name,
+              roll_no: studentData.rollNo,
+              department: studentData.department,
+              year: studentData.year,
+              gender: studentData.gender,
+              phone: studentData.phone,
+              guardian_name: studentData.guardianName || "",
+              guardian_phone: studentData.guardianPhone || ""
+            }
           }
-        }
-      });
+        });
 
       if (error) {
         console.error("Registration error:", error);
@@ -204,11 +215,59 @@ class AuthModule {
       }
 
       if (!data.user) {
-        window.app.showToast("Registration failed", "error");
+        window.app.showToast(
+          "Registration failed",
+          "error"
+        );
         return false;
       }
 
-      if (!data.session) {
+      const userId = data.user.id;
+
+      const { data: student, error: studentError } =
+        await window.supabaseClient
+          .from("students")
+          .insert({
+            profile_id: userId,
+            roll_no: studentData.rollNo,
+            full_name: studentData.name,
+            email: studentData.email
+          })
+          .select()
+          .single();
+
+      if (studentError) {
+
+        console.error(
+          "Student table insertion error:",
+          studentError
+        );
+
+        window.app.showToast(
+          "Account created, but student details could not be saved: " +
+          studentError.message,
+          "error"
+        );
+
+        return false;
+      }
+
+      console.log("Student successfully saved:", student);
+
+      window.app.showToast(
+        `Registration successful! Welcome ${studentData.name}`,
+        "success"
+      );
+
+      if (data.session) {
+
+        await this.loadUserProfile(data.user);
+
+        window.app.closeModal("modal-auth");
+        window.app.navigate("student-home");
+
+      } else {
+
         window.app.showToast(
           "Registration successful. Please verify your email before logging in.",
           "success"
@@ -216,29 +275,29 @@ class AuthModule {
 
         this.switchAuthTab("student-login");
 
-        document.getElementById("login-student-email").value =
-          studentData.email;
+        document.getElementById(
+          "login-student-email"
+        ).value = studentData.email;
 
-        document.getElementById("login-student-pwd").value = "";
-
-        return true;
+        document.getElementById(
+          "login-student-pwd"
+        ).value = "";
       }
-
-      await this.loadUserProfile(data.user);
-
-      window.app.showToast(
-        `Registration successful! Welcome ${studentData.name}`,
-        "success"
-      );
-
-      window.app.closeModal("modal-auth");
-      window.app.navigate("student-home");
 
       return true;
 
     } catch (error) {
-      console.error("Unexpected registration error:", error);
-      window.app.showToast("Something went wrong during registration", "error");
+
+      console.error(
+        "Unexpected registration error:",
+        error
+      );
+
+      window.app.showToast(
+        error.message || "Something went wrong during registration",
+        "error"
+      );
+
       return false;
     }
   }
